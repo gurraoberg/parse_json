@@ -1,0 +1,51 @@
+---
+# Incomplete just for testing purposes
+
+- name: Parse json data
+  hosts: localhost
+  gather_facts: false
+  become: true
+
+  vars:
+    json_data: "{{ lookup('file', 'json/data.json') | from_json }}"
+
+  tasks:
+    - name: Print data
+      debug:
+        var: json_data.distro
+
+
+    - name: Print hostname data
+      debug:
+        var: item
+      loop: "{{ json_data.distro }}"
+
+
+    - name: Install MySQL Python lib
+      pip:
+        name:
+          - pymysql
+          - mysql-connector
+          - mysql-connector-python
+        state: present
+
+    - name: Create MySQL database
+      mysql_db:
+        name: test_db
+        login_user: test
+        login_password: password
+        state: present
+
+# Manually created table "disto".
+
+    - name: Pass data into MySQL DB
+      mysql_query:
+        login_db: test_db
+        login_user: test
+        login_password: password
+        query: "INSERT INTO distro (hostname, system, version) VALUES ('{{ item.hostname }}', '{{ item.system }}', '{{ item.version }}');"
+      loop: "{{ json_data.distro }}"
+
+
+
+...

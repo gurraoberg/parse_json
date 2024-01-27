@@ -1,0 +1,14 @@
+{
+     "distro": [
+          {
+               "hostname": "hostname1",
+               "system": "RHEL",
+               "version": "8.8"
+          },
+          {
+               "hostname": "hostname2",
+               "system": "RHEL",
+               "version": "9.0"
+          }
+     ]
+}
