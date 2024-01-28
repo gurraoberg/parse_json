@@ -4,7 +4,6 @@
 - name: Parse json data
   hosts: localhost
   gather_facts: false
-  become: true
 
   vars:
     json_data: "{{ lookup('file', 'json/data.json') | from_json }}"
@@ -20,14 +19,7 @@
         var: item
       loop: "{{ json_data.distro }}"
 
-
-    - name: Install MySQL Python lib
-      pip:
-        name:
-          - pymysql
-          - mysql-connector
-          - mysql-connector-python
-        state: present
+# Manually created user "test".
 
     - name: Create MySQL database
       mysql_db:

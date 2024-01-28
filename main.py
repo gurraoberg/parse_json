@@ -16,12 +16,17 @@ for distro in distro_list:
 
      hostname_list.append(hostname)
 
-     print(f"Hostname: {hostname}\nSystem: {system}\nVersion: {version}\n")
+# Generate 100 new entries for testing.
+last_index = len(data['distro'])
+for i in range(last_index + 1, last_index + 101):
+     new_json_data = {
+          "hostname": f"hostname{i}",
+          "system": "RHEL",
+          "version": "8.8"
+     }
+     data['distro'].append(new_json_data)
 
-
-total_hosts = 0
-print("\033[4mHostnames:\033[0m")
-for hostname in hostname_list:
-     total_hosts +=1
-     print(hostname)
-print(f"Total hosts: {total_hosts}")
+with open('json/data.json', 'w') as file:
+     json.dump(data, file, indent=2)
+print("Added 100 new entries into 'data.json'.")
+print(f"Total hosts: {len(hostname_list)}")
